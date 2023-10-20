@@ -3,4 +3,4 @@ pandas
 numpy
 plotly
 plotly_express
-pytest-warnings
+#pytest-warnings
