@@ -269,15 +269,6 @@ with st.expander("ANÁLISE REGIONAL"):
     if not uf and not municipio and not bairro:
         st.write("Selecione alguma localização nos filtros para visualizar")
     else:
-        """filtered_df['LATITUDE'] = pd.to_numeric(filtered_df['LATITUDE'], errors= 'coerce')
-        filtered_df['LONGITUDE'] = pd.to_numeric(filtered_df['LONGITUDE'], errors= 'coerce')
-        coord_df = filtered_df[['LATITUDE', 'LONGITUDE']].dropna()
-
-        coord_df.rename(columns={"LATITUDE": "lat", "LONGITUDE": "lon"},inplace=True)
-
-        st.subheader("Geolocalização por CNPJ")
-        st.map(coord_df)"""
-
         st.subheader("Estabelecimentos por municipío")
         guia7, guia8 = st.tabs(titulos_guias)
 
@@ -350,25 +341,4 @@ with st.expander("ANÁLISE REGIONAL"):
             )
             st.plotly_chart(fig, use_container_width=True, height=200)
 
-"""
-st.subheader("Dados de CNPJ")
-
-
-
-titulos_guias_tabelas = ['Estabelecimentos', 'Empresas']
-guia11, guia12 = st.tabs(titulos_guias_tabelas)
-
-with guia11:
-    filtered_table_estab = filtered_df.drop(['RAZAO SOCIAL', 'LATITUDE', 'LONGITUDE', 'CAPITAL SOCIAL','PORTE DA EMPRESA'], axis=1).fillna(
-        "-").astype(str).reset_index(drop=True)
-    csv = filtered_table_estab.to_csv(index=False).encode('utf-8')
-    st.download_button('Download dos dados de estabelecimentos', data=csv, file_name="dados_cnpj.csv", mime='text/csv')
-    st.dataframe(filtered_table_estab)
-
-with guia12:
-    filtered_table_emp = filtered_df[['CNPJ BASICO','NOME FANTASIA', 'RAZAO SOCIAL', 'PORTE DA EMPRESA', 'CAPITAL SOCIAL']].drop_duplicates().fillna(
-        "-").astype(str).reset_index(drop=True)
-    csv = filtered_table_emp.to_csv(index=False).encode('utf-8')
-    st.download_button('Download dos dados de empresas', data=csv, file_name="dados_cnpj.csv", mime='text/csv')
-    st.dataframe(filtered_table_emp)
-    """
+st.cache_data.clear()
