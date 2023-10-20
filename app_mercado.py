@@ -269,14 +269,14 @@ with st.expander("ANÁLISE REGIONAL"):
     if not uf and not municipio and not bairro:
         st.write("Selecione alguma localização nos filtros para visualizar")
     else:
-        filtered_df['LATITUDE'] = pd.to_numeric(filtered_df['LATITUDE'], errors= 'coerce')
+"""        filtered_df['LATITUDE'] = pd.to_numeric(filtered_df['LATITUDE'], errors= 'coerce')
         filtered_df['LONGITUDE'] = pd.to_numeric(filtered_df['LONGITUDE'], errors= 'coerce')
         coord_df = filtered_df[['LATITUDE', 'LONGITUDE']].dropna()
 
         coord_df.rename(columns={"LATITUDE": "lat", "LONGITUDE": "lon"},inplace=True)
 
         st.subheader("Geolocalização por CNPJ")
-        st.map(coord_df)
+        st.map(coord_df)"""
 
         st.subheader("Estabelecimentos por municipío")
         guia7, guia8 = st.tabs(titulos_guias)
