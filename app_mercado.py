@@ -177,8 +177,7 @@ kpi1.metric("Quantidade total de empresas ativas",filtered_df["CNPJ BASICO"].nun
 kpi2.metric("Quantidade total de estabelecimentos ativos",filtered_df["CNPJ BASICO"].count())
 
 
-capital = f"R${capital_df['CAPITAL SOCIAL'].astype('float').sum():_.2f}"
-capital = capital.replace('.', ',').replace('_', '.')
+capital = f"R${capital_df['CAPITAL SOCIAL'].astype('float').sum():_.2f}".replace('.', ',').replace('_', '.')
 kpi3.metric("Capital social total", capital)
 
 #-----------------------------------------------------------------------------------------------
