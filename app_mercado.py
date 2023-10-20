@@ -279,7 +279,13 @@ with st.expander("ANÁLISE REGIONAL"):
             csv = municipio_cnpj_df.to_csv(index=False).encode('utf-8')
             st.download_button('Download dos dados de quantidade', data=csv, file_name="Quantidade_de_estabelecimentos_por_municipio.csv", mime='text/csv')
 
-            fig=px.bar(municipio_cnpj_df, x="DESCRICAO_MUNICIPIO", y="CNPJ BASICO", text_auto=True, template="seaborn")
+            fig=px.bar(municipio_cnpj_df, x="DESCRICAO_MUNICIPIO", y="CNPJ BASICO", text_auto=True, template="seaborn").update_layout(
+                xaxis={
+                    "range": [municipio_cnpj_df["CNPJ BASICO"].quantile(1), df["CNPJ BASICO"].max()],
+                    "rangeslider": {"visible": True},
+                    "autorange": True
+                }
+            )
             st.plotly_chart(fig,use_container_width=True, height=200)
 
         with guia8:
