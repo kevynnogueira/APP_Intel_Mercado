@@ -340,5 +340,3 @@ with st.expander("ANÁLISE REGIONAL"):
                 }
             )
             st.plotly_chart(fig, use_container_width=True, height=200)
-
-st.cache_data.clear()
