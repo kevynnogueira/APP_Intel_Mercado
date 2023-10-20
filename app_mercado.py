@@ -209,7 +209,7 @@ with guia2:
                  template="seaborn")
     st.plotly_chart(fig, use_container_width=True, height=200)
 
-st.subheader("Estabelecimentos por atividade")
+st.subheader("Dados por atividade")
 
 #------------------------
 guia3, guia4 = st.tabs(titulos_guias)
@@ -239,7 +239,7 @@ with guia4:
 
 
 #------------------------
-st.subheader("Quantidade de estabelecimentos por CNAE")
+st.subheader("Dados de estabelecimentos por CNAE")
 guia5, guia6 = st.tabs(titulos_guias)
 
 with guia5:
@@ -269,7 +269,7 @@ with st.expander("ANÁLISE REGIONAL"):
     if not uf and not municipio and not bairro:
         st.write("Selecione alguma localização nos filtros para visualizar")
     else:
-        st.subheader("Estabelecimentos por municipío")
+        st.subheader("Dados por municipío")
         guia7, guia8 = st.tabs(titulos_guias)
 
         with guia7:
@@ -304,7 +304,7 @@ with st.expander("ANÁLISE REGIONAL"):
             )
             st.plotly_chart(fig,use_container_width=True, height=200)
 
-        st.subheader("Estabelecimentos por bairro")
+        st.subheader("Dados por bairro")
         guia9, guia10 = st.tabs(titulos_guias)
 
         with guia9:
