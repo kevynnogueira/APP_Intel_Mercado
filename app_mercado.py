@@ -128,7 +128,7 @@ tipo_empresa = st.sidebar.multiselect("Tipo de empresa:", df5["TIPO DE EMPRESA"]
 if not tipo_empresa:
     df6 = df5.copy()
 else:
-    df6 = df5[df5["TIPO DE EMPRESA"].isin(porte_empresa)]
+    df6 = df5[df5["TIPO DE EMPRESA"].isin(tipo_empresa)]
 
 # Filtering the data
 
