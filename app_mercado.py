@@ -2,8 +2,8 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 import numpy as np
-import warnings
-warnings.filterwarnings('ignore')
+#import warnings
+#warnings.filterwarnings('ignore')
 
 st.set_page_config(page_title="Calculadora de mercado"
                    #, page_icon=":signal_strength:"
