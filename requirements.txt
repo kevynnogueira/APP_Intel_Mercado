@@ -1,6 +1,6 @@
 streamlit
 pandas
 #numpy
-plotly
+#plotly
 plotly_express
 #pytest-warnings
