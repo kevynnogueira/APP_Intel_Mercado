@@ -79,7 +79,7 @@ with st.expander("INFORMAÇÕES BÁSICAS"):
         st.write('[Dados de geolocalização do Open Adresses](https://openaddresses.io/)')
 
 
-st.cache_data
+@st.cache_data
 def carregar_dados():
     df = pd.read_parquet("df_completo.parquet")
     return df
