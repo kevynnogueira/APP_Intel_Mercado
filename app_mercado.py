@@ -269,7 +269,7 @@ with st.expander("ANÁLISE REGIONAL"):
     if not uf and not municipio and not bairro:
         st.write("Selecione alguma localização nos filtros para visualizar")
     else:
-"""        filtered_df['LATITUDE'] = pd.to_numeric(filtered_df['LATITUDE'], errors= 'coerce')
+        """filtered_df['LATITUDE'] = pd.to_numeric(filtered_df['LATITUDE'], errors= 'coerce')
         filtered_df['LONGITUDE'] = pd.to_numeric(filtered_df['LONGITUDE'], errors= 'coerce')
         coord_df = filtered_df[['LATITUDE', 'LONGITUDE']].dropna()
 
