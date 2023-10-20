@@ -163,8 +163,6 @@ elif not uf and not municipio and not bairro and not porte_empresa and tipo_empr
 #elif uf and municipio and bairro and porte_empresa and tipo_empresa: filtered_df = df6[df6['UF'].isin(uf) & df6['DESCRICAO_MUNICIPIO'].isin(municipio) & df6['BAIRRO'].isin(bairro) & df6['PORTE DA EMPRESA'].isin(porte_empresa) & df6['TIPO DE EMPRESA'].isin(tipo_empresa)]
 else: filtered_df = df6[df6['UF'].isin(uf) & df6['DESCRICAO_MUNICIPIO'].isin(municipio) & df6['BAIRRO'].isin(bairro) & df6['PORTE DA EMPRESA'].isin(porte_empresa) & df6['TIPO DE EMPRESA'].isin(tipo_empresa)]
 
-del df6, df5, df4, df3, df2, df1, df
-
 filtered_df['CAPITAL SOCIAL'] = filtered_df['CAPITAL SOCIAL'].astype('float')
 capital_df=filtered_df[['CNPJ BASICO', 'CAPITAL SOCIAL']].drop_duplicates()
 #-----------------------------------------------------------------------------------------------
