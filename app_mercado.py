@@ -2,8 +2,11 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 import numpy as np
+import gc
 #import warnings
 #warnings.filterwarnings('ignore')
+
+gc.enable()
 
 st.set_page_config(page_title="Calculadora de mercado"
                    #, page_icon=":signal_strength:"
@@ -339,3 +342,5 @@ with st.expander("ANÁLISE REGIONAL"):
                 }
             )
             st.plotly_chart(fig, use_container_width=True, height=200)
+
+gc.collect()
