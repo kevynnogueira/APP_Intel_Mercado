@@ -347,7 +347,7 @@ titulos_guias_tabelas = ['Estabelecimentos', 'Empresas']
 guia11, guia12 = st.tabs(titulos_guias_tabelas)
 
 with guia11:
-    filtered_table_estab = filtered_df.drop(['RAZAO SOCIAL', 'CAPITAL SOCIAL','PORTE DA EMPRESA'], axis=1).fillna(
+    filtered_table_estab = filtered_df.drop(['CAPITAL SOCIAL','PORTE DA EMPRESA'], axis=1).fillna(
         "-").astype(str).reset_index(drop=True)
     csv = filtered_table_estab.to_csv(index=False).encode('utf-8')
     st.download_button('Download dos dados de estabelecimentos', data=csv, file_name="dados_cnpj.csv", mime='text/csv')
