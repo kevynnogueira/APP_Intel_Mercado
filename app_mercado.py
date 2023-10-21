@@ -83,7 +83,7 @@ with st.expander("INFORMAÇÕES BÁSICAS"):
 
 @st.cache_data
 def carregar_dados():
-    df = pd.read_parquet("df_completo_rev02.parquet")
+    df = pd.read_parquet("df_completo_rev03.parquet")
     return df
 
 df = carregar_dados()
