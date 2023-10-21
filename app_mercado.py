@@ -81,7 +81,7 @@ with st.expander("INFORMAÇÕES BÁSICAS"):
         st.write('[Dados abertos do governo](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj)')
         st.write('[Dados de geolocalização do Open Adresses](https://openaddresses.io/)')
 
-#@st.cache_data
+@st.cache_data
 def carregar_dados():
     df = pd.read_parquet("df_completo_rev02.parquet")
     return df
