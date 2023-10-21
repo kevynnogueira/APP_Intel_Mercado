@@ -8,12 +8,12 @@ import gc
 
 gc.enable()
 
-st.set_page_config(page_title="Calculadora de mercado"
+st.set_page_config(page_title="Radar de mercado"
                    #, page_icon=":signal_strength:"
                    , layout="wide")
 
 with st.container():
-    st.title(" :signal_strength: Calculadora de mercado")
+    st.title(" :signal_strength: Radar de mercado")
     st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
     st.write("Desenvolvido por [Kevyn Nogueira](https://www.linkedin.com/in/kevynnogueira/)")
     st.write("-------------------------------------------------------------------------------")
@@ -81,10 +81,9 @@ with st.expander("INFORMAÇÕES BÁSICAS"):
         st.write('[Dados abertos do governo](https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj)')
         st.write('[Dados de geolocalização do Open Adresses](https://openaddresses.io/)')
 
-
-@st.cache_data
+#@st.cache_data
 def carregar_dados():
-    df = pd.read_parquet("df_completo.parquet")
+    df = pd.read_parquet("df_completo_rev02.parquet")
     return df
 
 df = carregar_dados()
@@ -341,5 +340,24 @@ with st.expander("ANÁLISE REGIONAL"):
                 }
             )
             st.plotly_chart(fig, use_container_width=True, height=200)
+
+st.subheader("Dados de CNPJ")
+
+titulos_guias_tabelas = ['Estabelecimentos', 'Empresas']
+guia11, guia12 = st.tabs(titulos_guias_tabelas)
+
+with guia11:
+    filtered_table_estab = filtered_df.drop(['RAZAO SOCIAL', 'CAPITAL SOCIAL','PORTE DA EMPRESA'], axis=1).fillna(
+        "-").astype(str).reset_index(drop=True)
+    csv = filtered_table_estab.to_csv(index=False).encode('utf-8')
+    st.download_button('Download dos dados de estabelecimentos', data=csv, file_name="dados_cnpj.csv", mime='text/csv')
+    st.dataframe(filtered_table_estab)
+
+with guia12:
+    filtered_table_emp = filtered_df[['CNPJ BASICO','NOME FANTASIA', 'RAZAO SOCIAL', 'PORTE DA EMPRESA', 'CAPITAL SOCIAL']].drop_duplicates().fillna(
+        "-").astype(str).reset_index(drop=True)
+    csv = filtered_table_emp.to_csv(index=False).encode('utf-8')
+    st.download_button('Download dos dados de empresas', data=csv, file_name="dados_cnpj.csv", mime='text/csv')
+    st.dataframe(filtered_table_emp)
 
 gc.collect()

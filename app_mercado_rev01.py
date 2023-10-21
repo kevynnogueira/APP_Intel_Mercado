@@ -1,12 +1,9 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-#import numpy as np
-import gc
-#import warnings
-#warnings.filterwarnings('ignore')
-
-gc.enable()
+import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
 
 st.set_page_config(page_title="Calculadora de mercado"
                    #, page_icon=":signal_strength:"
@@ -82,7 +79,7 @@ with st.expander("INFORMAÇÕES BÁSICAS"):
         st.write('[Dados de geolocalização do Open Adresses](https://openaddresses.io/)')
 
 
-@st.cache_data
+@st.experimental_memo
 def carregar_dados():
     df = pd.read_parquet("df_completo.parquet")
     return df
@@ -128,7 +125,7 @@ tipo_empresa = st.sidebar.multiselect("Tipo de empresa:", df5["TIPO DE EMPRESA"]
 if not tipo_empresa:
     df6 = df5.copy()
 else:
-    df6 = df5[df5["TIPO DE EMPRESA"].isin(tipo_empresa)]
+    df6 = df5[df5["TIPO DE EMPRESA"].isin(porte_empresa)]
 
 # Filtering the data
 
@@ -166,6 +163,7 @@ elif not uf and not municipio and not bairro and not porte_empresa and tipo_empr
 #elif uf and municipio and bairro and porte_empresa and tipo_empresa: filtered_df = df6[df6['UF'].isin(uf) & df6['DESCRICAO_MUNICIPIO'].isin(municipio) & df6['BAIRRO'].isin(bairro) & df6['PORTE DA EMPRESA'].isin(porte_empresa) & df6['TIPO DE EMPRESA'].isin(tipo_empresa)]
 else: filtered_df = df6[df6['UF'].isin(uf) & df6['DESCRICAO_MUNICIPIO'].isin(municipio) & df6['BAIRRO'].isin(bairro) & df6['PORTE DA EMPRESA'].isin(porte_empresa) & df6['TIPO DE EMPRESA'].isin(tipo_empresa)]
 
+
 filtered_df['CAPITAL SOCIAL'] = filtered_df['CAPITAL SOCIAL'].astype('float')
 capital_df=filtered_df[['CNPJ BASICO', 'CAPITAL SOCIAL']].drop_duplicates()
 #-----------------------------------------------------------------------------------------------
@@ -177,7 +175,8 @@ kpi1.metric("Quantidade total de empresas ativas",filtered_df["CNPJ BASICO"].nun
 kpi2.metric("Quantidade total de estabelecimentos ativos",filtered_df["CNPJ BASICO"].count())
 
 
-capital = f"R${capital_df['CAPITAL SOCIAL'].astype('float').sum():_.2f}".replace('.', ',').replace('_', '.')
+capital = f"R${capital_df['CAPITAL SOCIAL'].astype('float').sum():_.2f}"
+capital = capital.replace('.', ',').replace('_', '.')
 kpi3.metric("Capital social total", capital)
 
 #-----------------------------------------------------------------------------------------------
@@ -210,7 +209,7 @@ with guia2:
                  template="seaborn")
     st.plotly_chart(fig, use_container_width=True, height=200)
 
-st.subheader("Dados por atividade")
+st.subheader("Estabelecimentos por atividade")
 
 #------------------------
 guia3, guia4 = st.tabs(titulos_guias)
@@ -240,7 +239,7 @@ with guia4:
 
 
 #------------------------
-st.subheader("Dados de estabelecimentos por CNAE")
+st.subheader("Quantidade de estabelecimentos por CNAE")
 guia5, guia6 = st.tabs(titulos_guias)
 
 with guia5:
@@ -270,7 +269,16 @@ with st.expander("ANÁLISE REGIONAL"):
     if not uf and not municipio and not bairro:
         st.write("Selecione alguma localização nos filtros para visualizar")
     else:
-        st.subheader("Dados por municipío")
+        filtered_df['LATITUDE'] = pd.to_numeric(filtered_df['LATITUDE'], errors= 'coerce')
+        filtered_df['LONGITUDE'] = pd.to_numeric(filtered_df['LONGITUDE'], errors= 'coerce')
+        coord_df = filtered_df[['LATITUDE', 'LONGITUDE']].dropna()
+
+        coord_df.rename(columns={"LATITUDE": "lat", "LONGITUDE": "lon"},inplace=True)
+
+        st.subheader("Geolocalização por CNPJ")
+        st.map(coord_df)
+
+        st.subheader("Estabelecimentos por municipío")
         guia7, guia8 = st.tabs(titulos_guias)
 
         with guia7:
@@ -305,7 +313,7 @@ with st.expander("ANÁLISE REGIONAL"):
             )
             st.plotly_chart(fig,use_container_width=True, height=200)
 
-        st.subheader("Dados por bairro")
+        st.subheader("Estabelecimentos por bairro")
         guia9, guia10 = st.tabs(titulos_guias)
 
         with guia9:
@@ -342,4 +350,24 @@ with st.expander("ANÁLISE REGIONAL"):
             )
             st.plotly_chart(fig, use_container_width=True, height=200)
 
-gc.collect()
+
+st.subheader("Dados de CNPJ")
+
+
+
+titulos_guias_tabelas = ['Estabelecimentos', 'Empresas']
+guia11, guia12 = st.tabs(titulos_guias_tabelas)
+
+with guia11:
+    filtered_table_estab = filtered_df.drop(['RAZAO SOCIAL', 'LATITUDE', 'LONGITUDE', 'CAPITAL SOCIAL','PORTE DA EMPRESA'], axis=1).fillna(
+        "-").astype(str).reset_index(drop=True)
+    csv = filtered_table_estab.to_csv(index=False).encode('utf-8')
+    st.download_button('Download dos dados de estabelecimentos', data=csv, file_name="dados_cnpj.csv", mime='text/csv')
+    st.dataframe(filtered_table_estab)
+
+with guia12:
+    filtered_table_emp = filtered_df[['CNPJ BASICO','NOME FANTASIA', 'RAZAO SOCIAL', 'PORTE DA EMPRESA', 'CAPITAL SOCIAL']].drop_duplicates().fillna(
+        "-").astype(str).reset_index(drop=True)
+    csv = filtered_table_emp.to_csv(index=False).encode('utf-8')
+    st.download_button('Download dos dados de empresas', data=csv, file_name="dados_cnpj.csv", mime='text/csv')
+    st.dataframe(filtered_table_emp)
